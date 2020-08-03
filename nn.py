@@ -27,7 +27,7 @@ class NeuralNetwork:
         i = 0
         while i < len(deptharray) - 1:
             self.W.append(numpy.random.normal(0, pow(deptharray[i], -.5), (deptharray[i], deptharray[i + 1])))
-
+            i += 1
 
         #self.W_ih = numpy.random.normal(0, pow(self.h1, -.5), (self.h1, self.i + 1))
         #self.W_hh = numpy.random.normal(0, pow(self.h2, -.5), (self.h2, self.h1 + 1))
@@ -111,15 +111,6 @@ class NeuralNetwork:
             ind -= 1
 
 
-
-
-
-
-
-
-
-
-
     #def query(self, inputs_list):
 
     #    ins = inputs_list.copy()
@@ -152,7 +143,7 @@ class NeuralNetwork:
             l_ins = numpy.dot(self.deptharray[ind], ins)
             l_outs = self.activation(l_ins)
             if ind + 1 == self.depth:
-                return l_outs
+                return l_outs.flatten()
             else:
                 l_outs = numpy.insert(l_outs, l_outs.size, self.bias, 0)
                 ins = l_outs.copy()
@@ -196,8 +187,8 @@ class NeuralNetwork:
 
 
 if __name__ == "__main__":
-    x = NeuralNetwork(2, 3, 3, 2, 0.5)
-    x.train([1,0], [1, 0])
+    x = NeuralNetwork([2, 3, 3, 2], 0.5)
+    x.query([1,0])
 
 
 
