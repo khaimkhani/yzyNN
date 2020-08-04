@@ -78,7 +78,7 @@ class NeuralNetwork:
 
         ind = 1
         while ind < self.depth:
-            l_ins = numpy.dot(self.deptharray[ind], ins)
+            l_ins = numpy.dot(self.W[ind], ins)
             layer_vals_i.append(l_ins)
             l_outs = self.activation(l_ins)
 
@@ -140,7 +140,7 @@ class NeuralNetwork:
 
         ind = 1
         while ind < self.depth:
-            l_ins = numpy.dot(self.deptharray[ind], ins)
+            l_ins = numpy.dot(self.W[ind], ins)
             l_outs = self.activation(l_ins)
             if ind + 1 == self.depth:
                 return l_outs.flatten()
