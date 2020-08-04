@@ -131,7 +131,7 @@ class NeuralNetwork:
     def query(self, inputs):
         """
         Query function for NN. Loops through weight matrices till output.
-
+        bug: remove bias before multiplying weights with second layer.
         """
         ins = self.norm(inputs)
 
