@@ -1,2 +1,2 @@
 # yzyNN
-Yeezy Neural Network only for Kanye West Fans. Takes an array of layer sizes, minimum 2 layer NN.
+Yeezy Artificial Neural Network only for Kanye West Fans. Takes upto an 'infinite' sizes of arrays of amount of nodes at every layer resulting in a more flexible and generalized ANN.
