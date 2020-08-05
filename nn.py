@@ -72,20 +72,22 @@ class NeuralNetwork:
         layer_vals_o = deque()
         layer_vals_i = deque()
         layer_vals_i.append(numpy.array(ins, ndmin=2).T)
-        ins.append(self.bias)
+        if self.bias == 1:
+            ins.append(self.bias)
         ins = numpy.array(ins, ndmin=2).T
         layer_vals_o.append(ins)
 
         ind = 1
-        while ind < self.depth:
+        while ind < self.depth - 1:
             l_ins = numpy.dot(self.W[ind], ins)
             layer_vals_i.append(l_ins)
             l_outs = self.activation(l_ins)
 
-            if ind + 1 == self.depth:
+            if ind + 2 == self.depth:
                 pass
             else:
-                l_outs = numpy.insert(l_outs, l_outs.size, self.bias, 0)
+                if self.bias == 1:
+                    l_outs = numpy.insert(l_outs, l_outs.size, self.bias, 0)
                 ins = l_outs.copy()
             layer_vals_o.append(l_outs)
             ind += 1
@@ -111,8 +113,8 @@ class NeuralNetwork:
             ind -= 1
 
 
-    #def query(self, inputs_list):
 
+    #      REFERENCE FOR NEW QUERY() FUNCTION.
     #    ins = inputs_list.copy()
     #    ins = self.norm(ins)      #remove if you want to customize your normalization function
     #    ins.append(self.bias)
@@ -127,38 +129,32 @@ class NeuralNetwork:
     #    outputs = self.activation(output_inputs)
     #    return self.norm(outputs)
 
-
     def query(self, inputs):
         """
         Query function for NN. Loops through weight matrices till output.
-        bug: remove bias before multiplying weights with second layer.
         """
         ins = self.norm(inputs)
-
-        ins.append(self.bias)
+        if self.bias == 1:
+            ins.append(self.bias)
         ins = numpy.array(ins, ndmin=2).T
 
         ind = 1
-        while ind < self.depth:
+        while ind < self.depth - 1:
             l_ins = numpy.dot(self.W[ind], ins)
             l_outs = self.activation(l_ins)
-            if ind + 1 == self.depth:
-                return l_outs.flatten()
+            if ind + 2 == self.depth:
+                return list(l_outs.flatten())
             else:
-                l_outs = numpy.insert(l_outs, l_outs.size, self.bias, 0)
+                if self.bias == 1:
+                    l_outs = numpy.insert(l_outs, l_outs.size, self.bias, 0)
                 ins = l_outs.copy()
             ind += 1
-
-
-
 
     def norm(self, outs):
         x = sum(outs)
         for i in range(len(outs)):
             outs[i] = outs[i] / x
         return outs
-
-
 
     def activation(self, x):
         return scipy.special.expit(x)
