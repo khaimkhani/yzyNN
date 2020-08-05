@@ -11,7 +11,7 @@ class NeuralNetwork:
 
     def __init__(self, deptharray, lr, bias=False):
         """
-        General NN of size n where n >= 2.
+        General NN of size n where n >= 2. if bias = True then bias nodes are added at every layer except output.
         """
         if bias:
             self.bias = 1
@@ -67,7 +67,9 @@ class NeuralNetwork:
     """
 
     def train(self, inputs, targets):
-
+        """
+        Error due to bias node when adjusting weights. possibly break this ugly ass function up too.
+        """
         ins = self.norm(inputs)
         layer_vals_o = deque()
         layer_vals_i = deque()
@@ -109,7 +111,7 @@ class NeuralNetwork:
             error = BPerrors.pop()
             nb_outs = layer_vals_o.pop()
             nb_ins = layer_vals_i.pop()
-            self.W[ind] += self.lr * numpy.dot((error * nb_outs (1 - nb_outs)), numpy.transpose(numpy.insert(nb_ins, nb_ins.size, self.bias, 0)))
+            self.W[ind] += self.lr * numpy.dot((error * nb_outs * (1 - nb_outs)), numpy.transpose(numpy.insert(nb_ins, nb_ins.size, self.bias, 0)))
             ind -= 1
 
 
