@@ -26,7 +26,7 @@ class NeuralNetwork:
 
         i = 0
         while i < len(deptharray) - 1:
-            self.W.append(numpy.random.normal(0, pow(deptharray[i], -.5), (deptharray[i], deptharray[i + 1])))
+            self.W.append(numpy.random.normal(0, pow(deptharray[i + 1], -.5), (deptharray[i + 1], deptharray[i] + self.bias)))
             i += 1
 
         #self.W_ih = numpy.random.normal(0, pow(self.h1, -.5), (self.h1, self.i + 1))
