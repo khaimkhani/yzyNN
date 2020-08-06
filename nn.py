@@ -107,11 +107,14 @@ class NeuralNetwork:
 
         ind = self.depth - 2
         layer_vals_i.pop()
-        while len(BPerrors) != 0:
+        while len(layer_vals_i) != 0:
             error = BPerrors.pop()
             nb_outs = layer_vals_o.pop()
             nb_ins = layer_vals_i.pop()
-            self.W[ind] += self.lr * numpy.dot((error * nb_outs * (1 - nb_outs)), numpy.transpose(numpy.insert(nb_ins, nb_ins.size, self.bias, 0)))
+            if self.bias == 0:
+                self.W[ind] += self.lr * numpy.dot((error * nb_outs * (1 - nb_outs)), numpy.transpose(nb_ins)) #this only works for non bias cases. not even actually.
+            else:
+                self.W[ind] += self.lr * numpy.dot((error * nb_outs * (1 - nb_outs)), numpy.transpose(numpy.insert(nb_ins, nb_ins.size, 1, 0)))
             ind -= 1
 
 
