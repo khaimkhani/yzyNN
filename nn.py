@@ -136,7 +136,7 @@ class NeuralNetwork:
 
     def query(self, inputs):
         """
-        Query function for NN. Loops through weight matrices till output.
+        Query function for NN. Loops through weight matrices till output reached.
         """
         ins = self.norm(inputs)
         if self.bias == 1:
@@ -187,9 +187,7 @@ class NeuralNetwork:
 
 
 
-if __name__ == "__main__":
-    x = NeuralNetwork([2, 3, 3, 2], 0.5)
-    x.query([1,0])
+
 
 
 
