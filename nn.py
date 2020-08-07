@@ -94,30 +94,42 @@ class NeuralNetwork:
             layer_vals_o.append(l_outs)
             ind += 1
 
-        target = numpy.array(targets, ndmin=2).T
+        BPerrors = self.bperrors(l_outs, targets)
+        self.weight_adjustment(layer_vals_o, layer_vals_i, BPerrors)
+
+    def bperrors(self, l_outs, target):
+        """
+        Helper.
+        """
+        target = numpy.array(target, ndmin=2).T
         BPerrors = deque()
         error = target - l_outs
         BPerrors.appendleft(error)
         ind = self.depth - 2
-        while ind >= 0:     #populate Backpropogation error queue
+        while ind >= 0:  # populate Backpropogation error queue
             curr_error = numpy.dot(self.W[ind].T, error)
             BPerrors.appendleft(numpy.delete(curr_error, -1, 0))
             error = curr_error
             ind -= 1
+        return BPerrors
 
+    def weight_adjustment(self, outs, ins, bperrors):
+        """
+        helper. fix bias adjustment.
+        """
         ind = self.depth - 2
-        layer_vals_i.pop()
-        while len(layer_vals_i) != 0:
-            error = BPerrors.pop()
-            nb_outs = layer_vals_o.pop()
-            nb_ins = layer_vals_i.pop()
+        ins.pop()
+        while len(ins) != 0:
+            error = bperrors.pop()
+            nb_outs = outs.pop()
+            nb_ins = ins.pop()
             if self.bias == 0:
-                self.W[ind] += self.lr * numpy.dot((error * nb_outs * (1 - nb_outs)), numpy.transpose(nb_ins)) #this only works for non bias cases. not even actually.
+                self.W[ind] += self.lr * numpy.dot((error * nb_outs * (1 - nb_outs)), numpy.transpose(
+                    nb_ins))  # this only works for non bias cases. not even actually.
             else:
-                self.W[ind] += self.lr * numpy.dot((error * nb_outs * (1 - nb_outs)), numpy.transpose(numpy.insert(nb_ins, nb_ins.size, 1, 0)))
+                self.W[ind] += self.lr * numpy.dot((error * nb_outs * (1 - nb_outs)),
+                                                   numpy.transpose(numpy.insert(nb_ins, nb_ins.size, 1, 0)))
             ind -= 1
-
-
 
     #      REFERENCE FOR NEW QUERY() FUNCTION.
     #    ins = inputs_list.copy()
